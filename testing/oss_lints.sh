@@ -28,18 +28,20 @@ if [[ ${SHARD} != 0 ]]; then
 fi
 
 get_changed_py_files() {
-  # grep --quiet forces exit status 0 even if no matches are found
+  # Need to fetch the base branch in case it is not master.
+  git remote set-branches --add origin ${TRAVIS_BRANCH}
+  git fetch --depth=20 --quiet
   git diff \
       --name-only \
-      --diff-filter=AM ${TRAVIS_BRANCH}...HEAD \
-    | grep --quiet '^tensorflow_probability.*\.py$'
+      --diff-filter=AM origin/${TRAVIS_BRANCH}...HEAD \
+    | grep '^tensorflow_probability.*\.py$' || true
 }
 
 # Run lints on added/changed python files.
 changed_py_files=$(get_changed_py_files)
 if [[ -n "${changed_py_files}" ]]; then
   echo "Running pylint on ${changed_py_files}"
-  pylint -j2 --rcfile=testing/pylintrc ${changed_py_files})
+  pylint -j2 --rcfile=testing/pylintrc ${changed_py_files}
 else
   echo "No files to lint."
 fi

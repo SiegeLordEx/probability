@@ -40,8 +40,11 @@ shard_tests=$(bazel query 'tests(//tensorflow_probability/...)' |
 #     (short, moderate, long or eternal)
 #   --test_tag_filters -- skip tests whose 'tags' arg (if present) includes any
 #     of the comma-separated entries
+#   --action_env -- specify environment vars to pass through to action
+#     environment. (We need these in order to run inside a virtualenv.)
+#     See https://github.com/bazelbuild/bazel/issues/6648 and b/121259040.
 echo "${shard_tests}" | xargs bazel test --copt=-O3 --copt=-march=native \
-  --noincompatible_strict_action_env \
   --test_tag_filters=-gpu,-requires-gpu-sm35 \
   --test_timeout 300,450,1200,3600 --build_tests_only \
+  --action_env=PATH --action_env=LD_LIBRARY_PATH \
   --test_output=errors

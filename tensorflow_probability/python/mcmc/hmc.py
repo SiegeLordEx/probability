@@ -134,7 +134,7 @@ def make_simple_step_size_update_policy(num_adaptation_steps,
             tf.log(target_rate), log_mean_accept_ratio.dtype),
         -decrement_multiplier / (1. + decrement_multiplier),
         increment_multiplier)
-
+    a = True
     def build_assign_op():
       if mcmc_util.is_list_like(step_size_var):
         return [
