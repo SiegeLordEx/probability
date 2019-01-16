@@ -39,7 +39,7 @@ get_changed_py_files() {
 changed_py_files=$(get_changed_py_files)
 if [[ -n "${changed_py_files}" ]]; then
   echo "Running pylint on ${changed_py_files}"
-  pylint -j2 --rcfile=testing/pylintrc ${changed_py_files})
+  pylint -j2 --rcfile=testing/pylintrc ${changed_py_files}
 else
   echo "No files to lint."
 fi
