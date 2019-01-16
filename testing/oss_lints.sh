@@ -32,7 +32,7 @@ get_changed_py_files() {
   git diff \
       --name-only \
       --diff-filter=AM ${TRAVIS_BRANCH}...HEAD \
-    | grep --quiet '^tensorflow_probability.*\.py$'
+    | grep '^tensorflow_probability.*\.py$' || true
 }
 
 # Run lints on added/changed python files.
