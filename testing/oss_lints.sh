@@ -28,6 +28,7 @@ if [[ ${SHARD} != 0 ]]; then
 fi
 
 get_changed_py_files() {
+  git fetch --depth=20 --quiet origin ${TRAVIS_BRANCH}
   git diff \
       --name-only \
       --diff-filter=AM origin/${TRAVIS_BRANCH}...HEAD \
