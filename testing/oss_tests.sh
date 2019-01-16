@@ -40,8 +40,8 @@ shard_tests=$(bazel query 'tests(//tensorflow_probability/...)' |
 #     (short, moderate, long or eternal)
 #   --test_tag_filters -- skip tests whose 'tags' arg (if present) includes any
 #     of the comma-separated entries
-bazel test --copt=-O3 --copt=-march=native \
+echo "${shard_tests}" | xargs bazel test --copt=-O3 --copt=-march=native \
   --noincompatible_strict_action_env \
   --test_tag_filters=-gpu,-requires-gpu-sm35 \
   --test_timeout 300,450,1200,3600 --build_tests_only \
-  --test_output=errors -- "${shard_tests}"
+  --test_output=errors

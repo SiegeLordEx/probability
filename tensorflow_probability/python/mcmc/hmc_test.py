@@ -140,6 +140,7 @@ class HMCTest(tf.test.TestCase):
       independent_chain_ndims: Python `int` scalar representing the number of
         dims associated with independent chains.
     """
+    y = True
     x = tf.constant(np.random.rand(50, 10, 2), np.float32)
     self._integrator_conserves_energy(x, independent_chain_ndims)
 
