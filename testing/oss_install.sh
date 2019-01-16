@@ -33,7 +33,7 @@ pip install scipy hypothesis matplotlib pylint
 
 # Upgrade numpy to the latest to address issues that happen when testing with
 # Python 3.
-# pip install -U numpy
+pip install -U numpy
 
 # Install Bazel for tests.
 # Step 1: Install the JDK

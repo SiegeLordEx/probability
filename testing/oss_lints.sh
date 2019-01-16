@@ -28,10 +28,9 @@ if [[ ${SHARD} != 0 ]]; then
 fi
 
 get_changed_py_files() {
-  # grep --quiet forces exit status 0 even if no matches are found
   git diff \
       --name-only \
-      --diff-filter=AM ${TRAVIS_BRANCH}...HEAD \
+      --diff-filter=AM origin/${TRAVIS_BRANCH}...HEAD \
     | grep '^tensorflow_probability.*\.py$' || true
 }
 
