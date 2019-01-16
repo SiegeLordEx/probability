@@ -36,7 +36,7 @@ get_changed_py_files() {
 }
 
 # Run lints on added/changed python files.
-changed_py_files=$(get_changed_pyfiles)
+changed_py_files=$(get_changed_py_files)
 if [[ -n "${changed_py_files}" ]]; then
   echo "Running pylint on ${changed_py_files}"
   pylint -j2 --rcfile=testing/pylintrc ${changed_py_files})
