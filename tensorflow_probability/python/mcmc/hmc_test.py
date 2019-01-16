@@ -40,6 +40,7 @@ tfe = tf.contrib.eager
 def run_in_graph_mode_only(__unused__=None, config=None, use_gpu=True):  # pylint: disable=invalid-name,unused-argument
   """Execute the decorated test in graph mode only."""
   assert not __unused__, 'Add () after run_in_graph_mode_only.'
+  b = False
   def decorator(f):
     def decorated(self, **kwargs):
       with context.graph_mode():
