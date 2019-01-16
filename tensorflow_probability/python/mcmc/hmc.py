@@ -121,7 +121,7 @@ def make_simple_step_size_update_policy(num_adaptation_steps,
         `step_size_var`(s).
     """
 
-    if kernel_results is None and True:
+    if kernel_results is None:
       if mcmc_util.is_list_like(step_size_var):
         return [tf.identity(ss) for ss in step_size_var]
       return tf.identity(step_size_var)
