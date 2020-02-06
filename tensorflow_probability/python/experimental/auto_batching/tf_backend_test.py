@@ -18,6 +18,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import os
+
 # Dependency imports
 
 import hypothesis as hp
@@ -37,6 +39,10 @@ from tensorflow_probability.python.internal import test_util
 # TF_NP_DTYPES = [np.float32, np.float64, np.int32, np.complex64, np.bool]
 TF_NP_DTYPES = [np.float32, np.float64, np.int32, np.bool]
 TF_BACKEND = tf_backend.TensorFlowBackend()
+
+
+def hypothesis_max_examples():
+  return int(os.environ.get('AUTO_BATCHING_HYPOTHESIS_MAX_EXAMPLES', 100))
 
 
 def var_init(max_stack_depth, initial_value):
@@ -66,7 +72,7 @@ class TFVariableTest(test_util.TestCase, backend_test.VariableTestCase):
   @hp.given(hps.data())
   @hp.settings(
       deadline=None,
-      max_examples=100)
+      max_examples=hypothesis_max_examples())
   def testTFVariableRandomOps(self, data):
     # Hypothesis strategy:
     # Generate a random max stack depth and value shape
