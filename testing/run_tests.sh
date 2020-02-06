@@ -100,8 +100,15 @@ call_with_log_folding install_bazel
 call_with_log_folding install_python_packages
 
 # Get a shard of tests.
-shard_tests=$(bazel query 'tests(//tensorflow_probability/...)' |
-  awk -v n=${NUM_SHARDS} -v s=${SHARD} 'NR%n == s' )
+shard_tests=
+shard_tests_by_size() {
+  shard_tests="${shard_tests} $(bazel query attr\(size, $1, tests\(//tensorflow_probability/...\)\) |
+    awk -v n=${NUM_SHARDS} -v s=${SHARD} 'NR%n == s')"
+}
+
+shard_tests_by_size small
+shard_tests_by_size medium
+shard_tests_by_size large
 
 # Run tests. Notes on less obvious options:
 #   --notest_keep_going -- stop running tests as soon as anything fails. This is
@@ -122,6 +129,8 @@ echo "${shard_tests}" \
     --notest_keep_going \
     --test_tag_filters=-gpu,-requires-gpu-sm35,-notap,-no-oss-ci,-tfp_jax,-tf2-broken,-tf2-kokoro-broken \
     --test_timeout 300,450,1200,3600 \
+    --test_env=TFP_HYPOTHESIS_MAX_EXAMPLES=2 \
+    --test_env=AUTO_BATCHING_HYPOTHESIS_MAX_EXAMPLES=2 \
     --action_env=PATH \
     --action_env=LD_LIBRARY_PATH \
     --test_output=errors
