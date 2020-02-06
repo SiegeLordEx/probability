@@ -100,9 +100,15 @@ call_with_log_folding install_bazel
 call_with_log_folding install_python_packages
 
 # Get a shard of tests.
+# We shard each test size individually, to equalize the load on the shards.
+# Additionally, we filter out invalid tests before sharding to make the sharding
+# process more predictable.
 shard_tests=
 shard_tests_by_size() {
-  shard_tests="${shard_tests} $(bazel query attr\(size, $1, tests\(//tensorflow_probability/...\)\) |
+  shard_tests="${shard_tests} $(bazel query 'attr(size,' $1, \
+    'tests(//tensorflow_probability/...))
+    except attr(tags, "(gpu|requires-gpu-sm35|notap|no-oss-ci|tfp_jax|tf2-broken|tf2-kokoro-broken)",
+      tests(//tensorflow_probability/...))' |
     awk -v n=${NUM_SHARDS} -v s=${SHARD} 'NR%n == s')"
 }
 
@@ -127,7 +133,6 @@ echo "${shard_tests}" \
     --copt=-O3 \
     --copt=-march=native \
     --notest_keep_going \
-    --test_tag_filters=-gpu,-requires-gpu-sm35,-notap,-no-oss-ci,-tfp_jax,-tf2-broken,-tf2-kokoro-broken \
     --test_timeout 300,450,1200,3600 \
     --test_env=TFP_HYPOTHESIS_MAX_EXAMPLES=2 \
     --test_env=AUTO_BATCHING_HYPOTHESIS_MAX_EXAMPLES=2 \
