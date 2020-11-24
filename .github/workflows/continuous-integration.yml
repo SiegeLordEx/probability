@@ -18,13 +18,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Setup virtualenv
         run: |
-          pip3 install --user virtualenv
+          sudo apt install virtualenv
           TEST_VENV_PATH=~/test_virtualenv
-          python3 -m virtualenv -p python${{ matrix.python-version }} ${TEST_VENV_PATH}
-          source ${TEST_VENV_PATH}/bin/activate
+          virtualenv -p python${{ matrix.python-version }} ${TEST_VENV_PATH}
       - name: Lints
         run: |
+          source ${TEST_VENV_PATH}/bin/activate
           ./testing/run_travis_lints.sh
       - name: Tests
         run: |
+          source ${TEST_VENV_PATH}/bin/activate
           ./testing/run_travis_tests.sh
