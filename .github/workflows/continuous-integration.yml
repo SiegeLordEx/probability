@@ -20,8 +20,8 @@ jobs:
         run: |
           sudo apt install virtualenv
           TEST_VENV_PATH=~/test_virtualenv
-          virtualenv -p ${{ matrix.python_version }}
-          source ~/test_virtualenv/bin/activate
+          virtualenv -p ${{ matrix.python_version }} ${TEST_VENV_PATH}
+          source ${TEST_VENV_PATH}/bin/activate
       - name: Lints
         run: |
           ./testing/run_travis_lints.sh
