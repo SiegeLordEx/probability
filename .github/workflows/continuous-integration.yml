@@ -18,6 +18,7 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: Setup virtualenv
         run: |
+          sudo apt install virtualenv
           TEST_VENV_PATH=~/test_virtualenv
           virtualenv -p ${{ matrix.python_version }}
           source ~/test_virtualenv/bin/activate
