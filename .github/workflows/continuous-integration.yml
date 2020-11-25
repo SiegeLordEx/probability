@@ -1,8 +1,8 @@
 name: Tests
 on: [push, pull_request]
 jobs:
-  ubuntu_test:
-    name: Ubuntu tests
+  lints:
+    name: Lints
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -26,6 +26,30 @@ jobs:
         run: |
           source ${TEST_VENV_PATH}/bin/activate
           ./testing/run_travis_lints.sh
+  ubuntu_test:
+    name: Ubuntu tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7]
+        shard: [0, 1, 2, 3, 4, 5]
+    env:
+      TEST_VENV_PATH: ~/test_virtualenv
+      SHARD: ${{ matrix.shard }}
+      NUM_SHARDS: 6
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Setup virtualenv
+        run: |
+          sudo apt install virtualenv
+          virtualenv -p python${{ matrix.python-version }} ${TEST_VENV_PATH}
       - name: Tests
         run: |
           source ${TEST_VENV_PATH}/bin/activate
