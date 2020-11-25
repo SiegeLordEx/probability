@@ -1,5 +1,7 @@
 name: Tests
 on: [push, pull_request]
+env:
+  TEST_VENV_PATH: ~/test_virtualenv
 jobs:
   lints:
     name: Lints
@@ -8,7 +10,8 @@ jobs:
       matrix:
         python-version: [3.7]
     env:
-      TEST_VENV_PATH: ~/test_virtualenv
+      BEFORE_HASH: ${{ github.event.before }}
+      AFTER_HASH: ${{ github.event.after }}
     steps:
       - name: Checkout
         uses: actions/checkout@v1
