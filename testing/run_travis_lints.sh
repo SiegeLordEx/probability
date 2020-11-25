@@ -22,7 +22,7 @@ get_changed_py_files() {
     git fetch origin ${GITHUB_BASE_REF} --depth=1
     git diff \
         --name-only \
-        --diff-filter=AM origin/${GITHUB_BASE_REF}...${GITHUB_SHA} \
+        --diff-filter=AM origin/${GITHUB_BASE_REF} \
       | grep '^tensorflow_probability.*\.py$'
   fi
 }
