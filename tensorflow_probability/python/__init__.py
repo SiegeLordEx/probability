@@ -113,7 +113,9 @@ _allowed_symbols = [
     'util',
     'vi',
 ]
-
+print(
+1,
+   1)
 for pkg in _allowed_symbols:
   globals()[pkg] = lazy_loader.LazyLoader(
       pkg, globals(), 'tensorflow_probability.python.{}'.format(pkg),
