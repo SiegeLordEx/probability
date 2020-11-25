@@ -21,7 +21,7 @@ get_changed_py_files() {
   # Need to fetch the base branch in case it is not master.
   git diff \
       --name-only \
-      --diff-filter=AM BEFORE_HASH...AFTER_HASH \
+      --diff-filter=AM ${BEFORE_HASH}...${AFTER_HASH}\
     | grep '^tensorflow_probability.*\.py$' || true
 }
 
