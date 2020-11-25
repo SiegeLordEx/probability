@@ -19,7 +19,7 @@ set -e  # fail and exit on any command erroring
 
 get_changed_py_files() {
   if [ $GITHUB_BASE_REF ]; then
-    git fetch origin ${GITHUB_BASE_REF} --depth=20
+    git fetch origin ${GITHUB_BASE_REF} --depth=1
     git diff \
         --name-only \
         --diff-filter=AM origin/${GITHUB_BASE_REF}...${GITHUB_SHA} \
